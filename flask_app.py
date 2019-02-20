@@ -6,10 +6,8 @@ import requests
 import datetime
 import sqlite3
 
-
 app = Flask(__name__)
 CORS(app)
-
 
 def make_connection():
     db_name = "epidemic.db"
@@ -25,15 +23,13 @@ def make_connection():
         return False, False
     return con, cursor
 
-def update_stats(values):
-	
-    #UPDATE STATS HERE
-	con, cursor = make_connection()
-    diseaseId = values[2]
-
+def update_stats(values, con, cursor):
+    print("\n\n\n\n\nasdasdas")
+    values = tuple(list(values)[-1])
+    diseaseId = values[1]
     query = f"""
             SELECT * from Stats
-            WHERE diseaseid = {diseaseID};
+            WHERE diseaseid = {diseaseId};
     """
     try:
         cursor.execute(query)
@@ -42,14 +38,14 @@ def update_stats(values):
     data = cursor.fetchone()
     if not data:
         query = """
-                INSERT INTO Stats
-                VALUES (?, ?, ?, ?);
+                INSERT INTO Stats (diseaseid, ncases, ndeaths)
+                VALUES (?, ?, ?);
                 """
     else:
         query = f"""
                 UPDATE Stats
-                SET ncases = ncases + 1, ndeaths = ndeaths + {values[3]}
-                WHERE diseaseid = {diseaseID};
+                SET ncases = ncases + 1, ndeaths = ndeaths + {values[2]}
+                WHERE diseaseid = {diseaseId};
                 """
         values = False
     try:
@@ -59,12 +55,9 @@ def update_stats(values):
             cursor.execute(query)
         con.commit()
     except Exception as e:
-        return_val = str(e) + "Can't execute the query for " + type
-    finally:
-        con.close()
-    con.close()
-    return return_val    
-			
+        return_val = str(e) + "Can't execute the query."
+    return return_val
+
 
 def store_in_db(values, type = None):
     assert type , "type can't be null"
@@ -77,10 +70,13 @@ def store_in_db(values, type = None):
                 """
     elif type == 'new_case':
         query = """
-                        INSERT INTO Cases
-                        VALUES(?, ?, ?);
+                        INSERT INTO Cases(date, diseaseid, death, location)
+                        VALUES(?, ?, ?, ?);
                 """
-        update_stats(values)
+        try:
+            update_stats(values, con, cursor)
+        except:
+            con.close()
     elif type == 'drug':
         drug_id = values[0]
         query = f"""
@@ -133,7 +129,7 @@ def store_hospital():
 @app.route("/new_case/",methods=['GET'])
 def store_new_case():
     #TODO: Generate case_id
-    columns = "date diseaseid death".split()
+    columns = "date diseaseid death location".split()
     data_tuple = []
     for column in columns:
         if column == 'date':
@@ -163,3 +159,4 @@ def store_new_disease():
 
 if __name__ == '__main__':
    app.run(debug = True)
+   # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=1&death=1&location=something
