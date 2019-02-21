@@ -23,6 +23,30 @@ def make_connection():
         return False, False
     return con, cursor
 
+def fetch_from_db(values):
+    diseaseId, days = values
+    cur_date = datetime.datetime.now().date()
+    ref_date = cur_date - datetime.timedelta(days=days)
+
+    con, cursor = make_connection()
+    query = f"""
+            SELECT * from Cases
+            WHERE DATE(date) > {ref_date} AND diseaseid = {diseaseId}
+            """
+    try:
+        cursor.execute(query)
+    except Exception as e:
+        return_val = str(e)
+    finally:
+        con.close()
+
+    data = cursor.fetchall()
+    if data:
+        return dict(data)
+    else:
+        return {}
+
+
 def update_stats(values, con, cursor):
     return_val = "Done"
     values = tuple(list(values)[:-1])
@@ -118,6 +142,7 @@ def store_in_db(values, type = None):
     return return_val
 
 
+#STORING DATA IN DB
 @app.route("/register_hospital/",methods=['GET'])
 def store_hospital():
     #TODO: Generate user and hospital ID
@@ -136,7 +161,7 @@ def store_new_case():
     data_tuple = []
     for column in columns:
         if column == 'date':
-            data_tuple.append(str(datetime.datetime.now()))
+            data_tuple.append(str(datetime.datetime.now().date()))
             continue
         val = request.args.get(column)
         data_tuple.append(val)
@@ -160,6 +185,18 @@ def store_new_disease():
         data_tuple.append(val)
     return store_in_db(tuple(data_tuple), type='hospital')
 
+# fetching data
+
+@app.route("/fetch_cases/", methods = ['GET', 'POST'])
+def fetch_cases():
+    colums = "diseaseId days".split()
+    data_tuple = []
+    for col in columns:
+        val = request.args.get(column)
+        data_tuple.append(val)
+    return fetch_from_db(data_tuple, type = 'Cases')
+
 if __name__ == '__main__':
    app.run(debug = True)
    # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=1&death=1&location=something
+
