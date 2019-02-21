@@ -23,38 +23,52 @@ def make_connection():
         return False, False
     return con, cursor
 
-def fetch_from_db(values):
-    diseaseId, days = values
-    cur_date = datetime.datetime.now().date()
-    ref_date = cur_date - datetime.timedelta(days=days)
-
+def fetch_from_db(values, type = None):
+    assert type , "type can not be None"
     con, cursor = make_connection()
-    query = f"""
-            SELECT * from Cases
-            WHERE DATE(date) > {ref_date} AND diseaseid = {diseaseId}
-            """
+    if type == "stats":
+        diseaseid, days = values
+        cur_date = datetime.datetime.now().date()
+        ref_date = cur_date - datetime.timedelta(days=int(days))
+        query = f"""
+                SELECT * from Cases
+                WHERE DATE(date) > \"{ref_date}\" AND diseaseid = {diseaseid}
+                """
+    else:
+        drugid, diseaseid = values
+        if drugid and diseaseid:
+            query = f"""
+                    SELECT * from Drugs
+                    WHERE drugid = {drugid} AND diseaseid = {diseaseid}
+                    """
+        else:
+            query = f"""
+                    SELECT * from Drugs
+                    WHERE diseaseid = {diseaseid}
+                    """
+    print("\n\n", query)
+    cursor.execute(query)
     try:
         cursor.execute(query)
     except Exception as e:
         return_val = str(e)
-    finally:
         con.close()
-
-    data = cursor.fetchall()
+    rows = cursor.fetchall()
+    data = [dict(row) for row in rows]
+    con.close()
     if data:
-        return dict(data)
+        return data
     else:
         return {}
-
 
 def update_stats(values, con, cursor):
     return_val = "Done"
     values = tuple(list(values)[:-1])
-    diseaseId = values[1]
-    new_values = [ diseaseId, 1, values[2] ]
+    diseaseid = values[1]
+    new_values = [ diseaseid, 1, values[2] ]
     query = f"""
             SELECT * from Stats
-            WHERE diseaseid = {diseaseId};
+            WHERE diseaseid = {diseaseid};
     """
     try:
         cursor.execute(query)
@@ -70,7 +84,7 @@ def update_stats(values, con, cursor):
         query = f"""
                 UPDATE Stats
                 SET ncases = ncases + 1, ndeaths = ndeaths + {values[2]}
-                WHERE diseaseid = {diseaseId};
+                WHERE diseaseid = {diseaseid};
                 """
         new_values = False
     print(f"Doing query {query} and values {new_values}")
@@ -83,7 +97,6 @@ def update_stats(values, con, cursor):
     except Exception as e:
         return_val = str(e) + "Can't execute the query."
     return return_val
-
 
 def store_in_db(values, type = None):
     assert type , "type can't be null"
@@ -141,7 +154,6 @@ def store_in_db(values, type = None):
     con.close()
     return return_val
 
-
 #STORING DATA IN DB
 @app.route("/register_hospital/",methods=['GET'])
 def store_hospital():
@@ -169,7 +181,7 @@ def store_new_case():
 
 @app.route("/drug/", methods=['GET'])
 def store_drug_data():
-    columns = "drug2id drugname drugreq available diseaseid".split()
+    columns = "drugid drugname drugreq available diseaseid".split()
     data_tuple = []
     for column in columns:
         val = request.args.get(column)
@@ -185,18 +197,32 @@ def store_new_disease():
         data_tuple.append(val)
     return store_in_db(tuple(data_tuple), type='hospital')
 
-# fetching data
-
+# Fetching data
 @app.route("/fetch_cases/", methods = ['GET', 'POST'])
 def fetch_cases():
-    colums = "diseaseId days".split()
+    columns = "diseaseid days".split()
     data_tuple = []
-    for col in columns:
+    for column in columns:
         val = request.args.get(column)
         data_tuple.append(val)
-    return fetch_from_db(data_tuple, type = 'Cases')
+    return_data = fetch_from_db(data_tuple, type = 'cases')
+    return jsonify(return_data)
+
+@app.route("/fetch_drugs/", methods = ['GET', 'POST'])
+def fetch_drugs():
+    drugid, diseaseid = False, False
+    if "diseaseid" in request.args:
+        diseaseid = request.args.get("diseaseid")
+    if "drugid" in request.args:
+        drugid = request.args.get("drugid")
+    data_tuple = [drugid, diseaseid]
+    print("\n\nAAA", data_tuple)
+    return_data = fetch_from_db(data_tuple, type = 'drugs')
+    return jsonify(return_data)
 
 if __name__ == '__main__':
    app.run(debug = True)
    # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=1&death=1&location=something
-
+   # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=1
+   # http://127.0.0.1:5000/fetch_drugs/?diseaseid=1
+   # http://127.0.0.1:5000/drug/?drugid=2&drugname=test&drugreq=12&available=12&diseaseid=1
