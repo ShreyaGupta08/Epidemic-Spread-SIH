@@ -24,9 +24,10 @@ def make_connection():
     return con, cursor
 
 def update_stats(values, con, cursor):
-    print("\n\n\n\n\nasdasdas")
-    values = tuple(list(values)[-1])
+    return_val = "Done"
+    values = tuple(list(values)[:-1])
     diseaseId = values[1]
+    new_values = [ diseaseId, 1, values[2] ]
     query = f"""
             SELECT * from Stats
             WHERE diseaseid = {diseaseId};
@@ -47,10 +48,11 @@ def update_stats(values, con, cursor):
                 SET ncases = ncases + 1, ndeaths = ndeaths + {values[2]}
                 WHERE diseaseid = {diseaseId};
                 """
-        values = False
+        new_values = False
+    print(f"Doing query {query} and values {new_values}")
     try:
-        if values:
-            cursor.execute(query, values)
+        if new_values:
+            cursor.execute(query, new_values)
         else:
             cursor.execute(query)
         con.commit()
@@ -76,6 +78,7 @@ def store_in_db(values, type = None):
         try:
             update_stats(values, con, cursor)
         except:
+            print("hahahah")
             con.close()
     elif type == 'drug':
         drug_id = values[0]
@@ -141,7 +144,7 @@ def store_new_case():
 
 @app.route("/drug/", methods=['GET'])
 def store_drug_data():
-    columns = "drugid drugname drugreq available diseaseid".split()
+    columns = "drug2id drugname drugreq available diseaseid".split()
     data_tuple = []
     for column in columns:
         val = request.args.get(column)
