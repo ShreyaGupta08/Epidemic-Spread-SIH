@@ -141,6 +141,14 @@ def store_in_db(values, type = None):
                             WHERE drugid = {id};
                     """
             values = False
+    elif type == 'login':
+    	userid = values[0]
+    	password = values[1]
+
+    	query = f"""
+    					SELECT * FROM Login
+    					WHERE id = {userid} and password = {password}
+    			"""
     try:
         if values:
             cursor.execute(query, values)
@@ -197,7 +205,16 @@ def store_new_disease():
         data_tuple.append(val)
     return store_in_db(tuple(data_tuple), type='hospital')
 
-# Fetching data
+@app.route("/login/", methods = ['GET'])
+def store_new_login():
+	columns = "id password".split()
+	data_tuple = []
+	for column in columns:
+		val = request.args.get(column)
+		data_tuple.append(val)
+	return store_in_db(tuple(data_tuple), type='login')
+
+# FETCHING DATA
 @app.route("/fetch_cases/", methods = ['GET', 'POST'])
 def fetch_cases():
     columns = "diseaseid days".split()
