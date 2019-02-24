@@ -61,6 +61,28 @@ def fetch_from_db(values, type = None):
     else:
         return {}
 
+def validate_login(values):
+    userid = values[0]
+    password = values[1]
+    query = f"""
+    				SELECT * FROM Login
+    				WHERE id = {userid} and password = \"{password}\"
+    		"""
+    con, cursor = make_connection()
+    try:
+        cursor.execute(query)
+        rows = cursor.fetchall()
+    except Exception as e: #User doesn't exist
+        con.close()
+        return str(e)
+    finally: #close connection in either case
+        con.close()
+    if rows:
+        return_val = True
+    else:
+        return_val = False
+    return str(return_val)
+
 def update_stats(values, con, cursor):
     return_val = "Done"
     values = tuple(list(values)[:-1])
@@ -141,14 +163,6 @@ def store_in_db(values, type = None):
                             WHERE drugid = {id};
                     """
             values = False
-    elif type == 'login':
-    	userid = values[0]
-    	password = values[1]
-
-    	query = f"""
-    					SELECT * FROM Login
-    					WHERE id = {userid} and password = {password}
-    			"""
     try:
         if values:
             cursor.execute(query, values)
@@ -212,7 +226,7 @@ def store_new_login():
 	for column in columns:
 		val = request.args.get(column)
 		data_tuple.append(val)
-	return store_in_db(tuple(data_tuple), type='login')
+	return validate_login(data_tuple)
 
 # FETCHING DATA
 @app.route("/fetch_cases/", methods = ['GET', 'POST'])
@@ -241,5 +255,6 @@ if __name__ == '__main__':
    app.run(debug = True)
    # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=1&death=1&location=something
    # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=1
+   # http://127.0.0.1:5000/login/?id=12&password=123
    # http://127.0.0.1:5000/fetch_drugs/?diseaseid=1
    # http://127.0.0.1:5000/drug/?drugid=2&drugname=test&drugreq=12&available=12&diseaseid=1
