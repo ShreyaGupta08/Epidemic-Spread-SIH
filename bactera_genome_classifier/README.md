@@ -20,6 +20,7 @@ Philosophy: Current sequence alignment methods rely heavily on availability of s
 
 ## nani da fak is this data?
 - final_data.csv ftw
+- Check out data_profile.html for statistical analysis of all the columns
 - Genome reads: Make k-mers upto 4 (as per the paper) and store it's occurrence rate in separate column
 - Protein reads: Store AAIndex (Amino acid index) stats for 32 most prominent ones (again as per the original paper)
 
