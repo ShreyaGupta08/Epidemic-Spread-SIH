@@ -5,6 +5,8 @@ import os
 import requests
 import datetime
 import sqlite3
+import uuid
+import pickle
 
 app = Flask(__name__)
 CORS(app)
@@ -176,6 +178,10 @@ def store_in_db(values, type = None):
     con.close()
     return return_val
 
+@app.route("/", methods=['GET', 'POST'])
+def home():
+    return "SIH Epidemic shiz is working"
+
 #STORING DATA IN DB
 @app.route("/register_hospital/",methods=['GET'])
 def store_hospital():
@@ -239,6 +245,23 @@ def fetch_cases():
     return_data = fetch_from_db(data_tuple, type = 'cases')
     return jsonify(return_data)
 
+@app.route('/genome_upload/', methods = ['POST'])
+def upload_file():
+    """
+    This is to upload the FASTA sequence files. These are crowdsourced from
+    research labs and or test labs
+    """
+    try:
+        type = request.args.get("type") #Type can be DNA seq or protien seq
+    except:
+        type = "unknown"
+    if request.method == 'POST':
+      f = request.files['file']
+      id = str(uuid.uuid4())
+      f.save(str(type) + str(f.filename) + id)
+      return 'file uploaded successfully'
+    return False
+
 @app.route("/fetch_drugs/", methods = ['GET', 'POST'])
 def fetch_drugs():
     drugid, diseaseid = False, False
@@ -251,10 +274,27 @@ def fetch_drugs():
     return_data = fetch_from_db(data_tuple, type = 'drugs')
     return jsonify(return_data)
 
+@app.route("/similar_states/", methods = ['GET', 'POST'])
+def similar_states():
+    try:
+        state = request.args.get("state")
+    except:
+        return False
+    file_name = "state_cluster_list.txt"
+    my_dir = os.path.dirname(__file__)
+    cluster_file = os.path.join(my_dir, file_name)
+    with open(cluster_file, "rb") as fp:
+        list_final = pickle.load(fp)
+    for i in list_final:
+        if state in i:
+            return jsonify({"similar" : i})
+    return jsonify({"similar" : "None"})
+
 if __name__ == '__main__':
    app.run(debug = True)
    # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=1&death=1&location=something
    # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=1
    # http://127.0.0.1:5000/login/?id=12&password=123
+   # http://127.0.0.1:5000/similar_states/?state=delhi
    # http://127.0.0.1:5000/fetch_drugs/?diseaseid=1
    # http://127.0.0.1:5000/drug/?drugid=2&drugname=test&drugreq=12&available=12&diseaseid=1
