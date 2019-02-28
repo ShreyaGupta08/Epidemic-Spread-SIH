@@ -1,10 +1,10 @@
 # Bacterial genome classification (HP/non-HP)
 Original paper: https://www.nature.com/articles/srep39194
-Bacterial pathogenicity prediction using ML over the NGS sequencing data for it's genome and protein structure. 
+Bacterial pathogenicity prediction using ML over the NGS sequencing data for it's genome and protein structure.
 Philosophy: Current sequence alignment methods rely heavily on availability of similar genomes which not always the case. RL based method to find HP bacteria is much more robust and has wider range of application.
 
 ## Theory
-- NGS: Next generation sequencing - A new state of the art technology (methodology) to collect sequence data of genomes. It replaced sanger sequencing. (look up sanger sequencing to understand things better) 
+- NGS: Next generation sequencing - A new state of the art technology (methodology) to collect sequence data of genomes. It replaced sanger sequencing. (look up sanger sequencing to understand things better)
 - FASTA: Fast-all - A format to store the DNA sequence in textual format. A unique symbol for each base
     - Thymine: T
     - Guanine: G
@@ -30,5 +30,8 @@ Philosophy: Current sequence alignment methods rely heavily on availability of s
 
 ## Results
 Achieved a 95% accuracy that is 7% more than 88% accuracy achieved in the original paper (without the use of other models).
-This is.. 
+This is..
 ![](https://i.imgur.com/P8O5Lr0.jpg)
+
+## Drawbacks
+- Only for bacteria right now, can be trained similarly for viruses etc
