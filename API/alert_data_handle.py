@@ -1,19 +1,24 @@
 import json
 import datetime
 from twilio.rest import Client
-import tweepy
+# import tweepy
 import os
+
+def location_to_district(location):
+    return "Ujjain"
 
 class Alert():
     def __init__(self):
         my_dir = os.path.dirname(__file__)
         self.alert_file_name = os.path.join(my_dir, "alert_data.json")
         self.date_track_file = os.path.join(my_dir, "date_track.json")
+        self.correlated_file = os.path.join(my_dir, "correlated.json")
         self.THRESHHOLD = 3
+        # self.THRESHHOLD = self.get_threshholds()
         print("obj made")
 
     def update(self, diseaseid, location):
-        print(f"I GOT location: {location}, {diseaseid}")
+        # print(f"I GOT location: {location}, {diseaseid}")
         send_alert = False
         with open(self.alert_file_name) as handle:
             json_data = json.loads(handle.read())
@@ -26,6 +31,7 @@ class Alert():
                 json_data[location] = {}
                 json_data[location][diseaseid] = 1
         print(json_data[location][diseaseid])
+        # if json_data[location][diseaseid] > self.THRESHHOLD[location_to_district(location)]:
         if json_data[location][diseaseid] > self.THRESHHOLD:
             send_alert = True
         with open(self.alert_file_name, 'w') as fp:
@@ -45,6 +51,30 @@ class Alert():
              )
         print("SMS sent to people.")
 
+    def correlated(self, diseaseid, location):
+        district = location_to_district(location)
+        with open(self.correlated_file) as handle:
+            json_data = json.loads(handle.read())
+        try:
+            json_data[diseaseid].append(district)
+        except:
+            json_data[diseaseid] = [district]
+        with open(self.correlated_file, 'w') as fp:
+            json.dump(json_data, fp)
+        return True
+
+    def get_threshholds(self):
+        my_dir = os.path.dirname(__file__)
+        population = os.path.join(my_dir, "population.json")
+        with open(population) as handle:
+            json_data = json.loads(handle.read())
+        for key in json_data:
+            json_data[key] *= 0.015
+        return json_data
+
+
+
+
 
 # consumer_key ="AU1mZxFBAJQdeNae7AaMoJtCa"
 # consumer_secret ="2Gs56JeKwrKhG8QaQx30mES55KlTLgg6xo9lbrz5cVsPkVNdtl"
@@ -60,4 +90,3 @@ class Alert():
 #
 # # update the status
 # api.update_status(status ="alalalalalal")
-Alert().update(213989, "asdasdas")

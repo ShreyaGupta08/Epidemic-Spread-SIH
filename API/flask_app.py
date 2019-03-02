@@ -8,9 +8,43 @@ import sqlite3
 import uuid
 import pickle
 from alert_data_handle import Alert
+import json
 
 app = Flask(__name__)
 CORS(app)
+
+def get_pharmacies(diseaseid):
+    vals = fetch_from_db([False, diseaseid], type = 'drugs')
+    try:
+        drugid =  vals[0]['drugid']
+    except:
+        drugid = -1
+    return get_pharma_from_db(str(drugid))
+
+
+def get_predicted_districts(diseaseid):
+    my_dir = os.path.dirname(__file__)
+    correlated_file = os.path.join(my_dir, "correlated.json")
+    with open(correlated_file) as handle:
+        json_data = json.loads(handle.read())
+    try:
+        districts = json_data[diseaseid]
+    except:
+        districts = []
+    if districts:
+        cluster_file = os.path.join(my_dir, "final_list.txt")
+        with open(cluster_file, "rb") as fp:
+            list_final = pickle.load(fp)
+        for i in list_final:
+            for district in districts:
+                if district in i:
+                    ds = i
+        answer = []
+        for d in ds:
+            answer.append(district_to_location(d))
+    else:
+        answer = []
+    return answer
 
 
 def district_to_location(district):
@@ -22,9 +56,7 @@ def district_to_location(district):
         datum = datum.split(",")
         if datum[0] == district:
             return float(datum[-2]), float(datum[-3])
-def send_alert():
-    #WRITE THISIHSISHISHSI THIS
-    pass
+    return False
 
 
 def get_pharma_from_db(drugid):
@@ -41,9 +73,9 @@ def get_pharma_from_db(drugid):
     finally:
         con.close()
     data = [dict(row) for row in rows]
+    index = 0
     for datum in data:
         ids = datum['drugid'].split()
-        print(type(ids))
         try:
             i = ids.index(drugid)
             try:
@@ -51,18 +83,20 @@ def get_pharma_from_db(drugid):
                                 "avail" : int(datum['drugavail'].split()[i]),
                                 "location" : datum['location'],
                                 }
-                amount[datum['id']] = inner_data
+                amount[index+1] = inner_data
             except:
                 inner_data = {
                                 "avail" : datum['drugavail'].split()[i],
                                 "location" : datum['location'],
                                 }
-                amount[datum['id']] = inner_data
+                amount[index+1] = inner_data
+            index += 1
         except:
             continue
         # if id in ids:
         #     farm_id.append(datum['id'])
         #     amount[id] = datum['drugavail'].split()
+    print(amount)
     return amount
 
 
@@ -216,7 +250,7 @@ def store_in_db(values, type = None):
         if not data:
             query = """
                             INSERT INTO Drugs
-                            VALUES (?, ?, ?, ?, ?);
+                            VALUES (?, ?, ?, ?);
                     """
         else:
             id, available = values[0], values[2]
@@ -269,13 +303,14 @@ def store_new_case():
     store_in_db(tuple(data_tuple), type='new_case')
     alert = Alert()
     if alert.update(data_tuple[1], data_tuple[3]):
+        alert.correlated(data_tuple[1], data_tuple[3])
         alert.send_sms("Swine flu")
     return_val = f"Epidemic ID: {data_tuple[1]} stored in databse."
     return str(True)
 
-@app.route("/drug/", methods=['GET'])
+@app.route("/new_drug/", methods=['GET'])
 def store_drug_data():
-    columns = "drugid drugname drugreq available diseaseid".split()
+    columns = "drugid drugname drugreq diseaseid".split()
     data_tuple = []
     for column in columns:
         val = request.args.get(column)
@@ -308,8 +343,33 @@ def fetch_cases():
     for column in columns:
         val = request.args.get(column)
         data_tuple.append(val)
-    return_data = fetch_from_db(data_tuple, type = 'cases')
+    return_data = {}
+    return_data['cases'] = fetch_from_db(data_tuple, type = 'cases')
+    return_data["predicted_districts"] = get_predicted_districts(data_tuple[0])
+    return_data["pharmacies"] = get_pharmacies(data_tuple[0])
     return jsonify(return_data)
+
+@app.route("/fetch_only_cases/", methods = ['GET', 'POST'])
+def fetch_only_cases():
+    columns = "diseaseid days".split()
+    data_tuple = []
+    for column in columns:
+        val = request.args.get(column)
+        data_tuple.append(val)
+    return_data = {}
+    data = fetch_from_db(data_tuple, type = 'cases')
+    final_case_data, final_death_data = {}, {}
+    for row in data:
+        date = row['date']
+        try:
+            final_case_data[date] += 1
+        except:
+            final_case_data[date] = 1
+        try:
+            final_death_data[date] += 1
+        except:
+            final_death_data[date] = 1
+    return jsonify({"cases":final_case_data, "deaths":final_death_data})
 
 @app.route("/fetch_stats/", methods = ['GET', 'POST'])
 def fetch_stats():
@@ -346,7 +406,6 @@ def fetch_drugs():
     if "drugid" in request.args:
         drugid = request.args.get("drugid")
     data_tuple = [drugid, diseaseid]
-    print("\n\nAAA", data_tuple)
     return_data = fetch_from_db(data_tuple, type = 'drugs')
     return jsonify(return_data)
 
@@ -378,16 +437,15 @@ def get_pharma():
     # print("nani")
     return jsonify(return_data)
 
-
-
 if __name__ == '__main__':
    app.run(debug = True)
    #register_hospital
    # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=20&death=1&location="123.423423 124.356345"
-   # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=10985
-   # http://127.0.0.1:5000/fetch_stats/?diseaseid=10985
+   # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=10
+   # http://127.0.0.1:5000/fetch_only_cases/?days=30&diseaseid=10
+   # http://127.0.0.1:5000/fetch_stats/?diseaseid=10
    # http://127.0.0.1:5000/login/?id=12&password=123
    # http://127.0.0.1:5000/similar_states/?state=Ujjain
    # http://127.0.0.1:5000/fetch_drugs/?diseaseid=1
-   # http://127.0.0.1:5000/drug/?drugid=2&drugname=test&drugreq=12&available=12&diseaseid=1
+   # http://127.0.0.1:5000/new_drug/?drugid=2&drugname=test&drugreq=12&diseaseid=10
    # http://127.0.0.1:5000/get_pharma/?drugid=502
