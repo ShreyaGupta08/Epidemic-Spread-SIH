@@ -7,9 +7,64 @@ import datetime
 import sqlite3
 import uuid
 import pickle
+from alert_data_handle import Alert
 
 app = Flask(__name__)
 CORS(app)
+
+
+def district_to_location(district):
+    my_dir = os.path.dirname(__file__)
+    district_file = os.path.join(my_dir, "district.csv")
+    with open(district_file) as handle:
+        data = handle.readlines()
+    for datum in data:
+        datum = datum.split(",")
+        if datum[0] == district:
+            return float(datum[-2]), float(datum[-3])
+def send_alert():
+    #WRITE THISIHSISHISHSI THIS
+    pass
+
+
+def get_pharma_from_db(drugid):
+    con, cursor = make_connection()
+    query = f"""
+            SELECT * from Pharmacy
+        """
+    amount = {}
+    try:
+        cursor.execute(query)
+        rows = cursor.fetchall()
+    except Exception as e:
+        print(f"Exception {e} in Pharmacy")
+    finally:
+        con.close()
+    data = [dict(row) for row in rows]
+    for datum in data:
+        ids = datum['drugid'].split()
+        print(type(ids))
+        try:
+            i = ids.index(drugid)
+            try:
+                inner_data = {
+                                "avail" : int(datum['drugavail'].split()[i]),
+                                "location" : datum['location'],
+                                }
+                amount[datum['id']] = inner_data
+            except:
+                inner_data = {
+                                "avail" : datum['drugavail'].split()[i],
+                                "location" : datum['location'],
+                                }
+                amount[datum['id']] = inner_data
+        except:
+            continue
+        # if id in ids:
+        #     farm_id.append(datum['id'])
+        #     amount[id] = datum['drugavail'].split()
+    return amount
+
 
 def make_connection():
     db_name = "epidemic.db"
@@ -28,13 +83,19 @@ def make_connection():
 def fetch_from_db(values, type = None):
     assert type , "type can not be None"
     con, cursor = make_connection()
-    if type == "stats":
+    if type == "cases":
         diseaseid, days = values
         cur_date = datetime.datetime.now().date()
         ref_date = cur_date - datetime.timedelta(days=int(days))
         query = f"""
                 SELECT * from Cases
-                WHERE DATE(date) > \"{ref_date}\" AND diseaseid = {diseaseid}
+                WHERE date > \"{ref_date}\" AND diseaseid = {diseaseid}
+                """
+    elif type == "stats":
+        diseaseid = values[0]
+        query = f"""
+                SELECT * from Stats
+                WHERE diseaseid = {diseaseid}
                 """
     else:
         drugid, diseaseid = values
@@ -205,7 +266,12 @@ def store_new_case():
             continue
         val = request.args.get(column)
         data_tuple.append(val)
-    return store_in_db(tuple(data_tuple), type='new_case')
+    store_in_db(tuple(data_tuple), type='new_case')
+    alert = Alert()
+    if alert.update(data_tuple[1], data_tuple[3]):
+        alert.send_sms("Swine flu")
+    return_val = f"Epidemic ID: {data_tuple[1]} stored in databse."
+    return str(True)
 
 @app.route("/drug/", methods=['GET'])
 def store_drug_data():
@@ -245,6 +311,16 @@ def fetch_cases():
     return_data = fetch_from_db(data_tuple, type = 'cases')
     return jsonify(return_data)
 
+@app.route("/fetch_stats/", methods = ['GET', 'POST'])
+def fetch_stats():
+    columns = "diseaseid".split()
+    data_tuple = []
+    for column in columns:
+        val = request.args.get(column)
+        data_tuple.append(val)
+    return_data = fetch_from_db(data_tuple, type = 'stats')
+    return jsonify(return_data)
+
 @app.route('/genome_upload/', methods = ['POST'])
 def upload_file():
     """
@@ -280,21 +356,38 @@ def similar_states():
         state = request.args.get("state")
     except:
         return False
-    file_name = "state_cluster_list.txt"
+    file_name = "final_list.txt"
     my_dir = os.path.dirname(__file__)
     cluster_file = os.path.join(my_dir, file_name)
     with open(cluster_file, "rb") as fp:
         list_final = pickle.load(fp)
     for i in list_final:
         if state in i:
-            return jsonify({"similar" : i})
-    return jsonify({"similar" : "None"})
+            districts = i
+    # if state == "Ujjain":
+        # districts = ["Shivpuri", "Datia", "Gwalior"]
+    answer = []
+    for district in districts:
+        answer.append(district_to_location(district))
+    return jsonify({"similar" : answer})
+
+@app.route("/get_pharma/", methods = ['GET', 'POST'])
+def get_pharma():
+    drugid = request.args.get("drugid")
+    return_data = get_pharma_from_db(drugid)
+    # print("nani")
+    return jsonify(return_data)
+
+
 
 if __name__ == '__main__':
    app.run(debug = True)
-   # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=1&death=1&location=something
-   # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=1
+   #register_hospital
+   # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=20&death=1&location="123.423423 124.356345"
+   # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=10985
+   # http://127.0.0.1:5000/fetch_stats/?diseaseid=10985
    # http://127.0.0.1:5000/login/?id=12&password=123
-   # http://127.0.0.1:5000/similar_states/?state=delhi
+   # http://127.0.0.1:5000/similar_states/?state=Ujjain
    # http://127.0.0.1:5000/fetch_drugs/?diseaseid=1
    # http://127.0.0.1:5000/drug/?drugid=2&drugname=test&drugreq=12&available=12&diseaseid=1
+   # http://127.0.0.1:5000/get_pharma/?drugid=502
