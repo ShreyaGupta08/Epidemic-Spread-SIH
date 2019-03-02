@@ -1,4 +1,14 @@
 # EPIDEMIC
+- > Where are the forums? 
+- > Where is the time series predictive model?
+- > Where are the email/SMS auto-notification engine?
+- > Where is the simulation?
+- > Where is the website (topkek)
+- > Where are the beautiful and fancy visualizations
+- > Where is da money?
+
+
+
 
 - flask_app.py is the API (Work under progress) - dengue
 - db.ipynb is the jupyter notebook to create the sqlite database - shreya 
