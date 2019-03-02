@@ -1,4 +1,4 @@
-[nbvcytreaz import json
+import json
 import datetime
 from twilio.rest import Client
 import tweepy
