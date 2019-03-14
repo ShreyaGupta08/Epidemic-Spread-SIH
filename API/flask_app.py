@@ -9,9 +9,57 @@ import uuid
 import pickle
 from alert_data_handle import Alert
 import json
+import pickle
+import pandas as pd
+
+
 
 app = Flask(__name__)
 CORS(app)
+
+def distancefunc(i,j,data):
+    dist = 0
+    for k in range(1,8):
+        dist = dist + abs(data.iloc[i][k]-data.iloc[j][k])
+    match = 0
+    b = []
+    return dist
+data = pd.read_csv('new_clustering.csv')
+data.head()
+
+
+# In[21]:
+
+
+def ret_cluster_list(name):
+    data = pd.read_csv('new_clustering.csv')
+    for i in range(0,50):
+#     print(data.iloc[i][2])
+        data.iloc[i,2] = data.iloc[i,2][:-1]
+        data.iloc[i,2] = float(data.iloc[i,2])
+    index = {}
+    for i in range(0,50):
+        index[data.iloc[i][0]] = i
+    with open("final_list.txt", "rb") as fp:
+        list_final = pickle.load(fp)
+    l = []
+    for i in list_final:
+        if name in i:
+            l=i
+            break
+    dist = []
+    for k in l:
+        dist.append((distancefunc(index[name],index[k],data),k))
+    dist.sort()
+    color = {}
+    c = '#ffff99'
+    for i in range(0,len(dist)):
+        if len(dist)-i<=4:
+            c = '#ff8000'
+        if len(dist)-i<=2:
+            c = '#cccc00'
+        color[dist[i][1]] = c
+    return color
 
 def get_pharmacies(diseaseid):
     vals = fetch_from_db([False, diseaseid], type = 'drugs')
@@ -24,6 +72,7 @@ def get_pharmacies(diseaseid):
 
 def get_predicted_districts(diseaseid):
     my_dir = os.path.dirname(__file__)
+    dicts = []
     correlated_file = os.path.join(my_dir, "correlated.json")
     with open(correlated_file) as handle:
         json_data = json.loads(handle.read())
@@ -32,18 +81,30 @@ def get_predicted_districts(diseaseid):
     except:
         districts = []
     if districts:
-        cluster_file = os.path.join(my_dir, "final_list.txt")
-        with open(cluster_file, "rb") as fp:
-            list_final = pickle.load(fp)
-        for i in list_final:
-            for district in districts:
-                if district in i:
-                    ds = i
+        final_keys = []
+        final_vals = []
         answer = []
-        for d in ds:
-            answer.append(district_to_location(d))
+        for district in districts:
+            dicts.append(ret_cluster_list(district))
+        for d in dicts:
+            for key in d:
+                f1, f2 = district_to_location(key)
+                string = str(f1) + " " + str(f2)
+                final_keys.append(string)
+                final_vals.append(d[key])
+        for fk, fv in zip(final_keys, final_vals):
+            answer.append(str(fk) + " " + str(fv))
+        # answer = []
+        # for d in ds:
+        #     answer.append(district_to_location(d))
     else:
-        answer = []
+        answer = ""
+    # for k in answer:
+    #     temp = ""
+    #     for l in k:
+    #         temp += str(l)
+    #         temp += " "
+    #     final_answer.append(temp[:-1])
     return answer
 
 
@@ -58,6 +119,20 @@ def district_to_location(district):
             return float(datum[-2]), float(datum[-3])
     return False
 
+def to_name(diseaseid):
+    con, cursor = make_connection()
+    query = f"""
+            SELECT * from Diseases
+            where id = {diseaseid}
+        """
+    cursor.execute(query)
+    try:
+        data = cursor.fetchone()
+    except Exception as e:
+        print(f"Exception {e} in Pharmacy")
+    finally:
+        con.close()
+    return data[1]
 
 def get_pharma_from_db(drugid):
     con, cursor = make_connection()
@@ -93,12 +168,7 @@ def get_pharma_from_db(drugid):
             index += 1
         except:
             continue
-        # if id in ids:
-        #     farm_id.append(datum['id'])
-        #     amount[id] = datum['drugavail'].split()
-    print(amount)
     return amount
-
 
 def make_connection():
     db_name = "epidemic.db"
@@ -143,8 +213,7 @@ def fetch_from_db(values, type = None):
                     SELECT * from Drugs
                     WHERE diseaseid = {diseaseid}
                     """
-    print("\n\n", query)
-    cursor.execute(query)
+    # print("\n\n", query)
     try:
         cursor.execute(query)
     except Exception as e:
@@ -206,7 +275,7 @@ def update_stats(values, con, cursor):
                 WHERE diseaseid = {diseaseid};
                 """
         new_values = False
-    print(f"Doing query {query} and values {new_values}")
+    # print(f"Doing query {qfuery} and values {new_values}")
     try:
         if new_values:
             cursor.execute(query, new_values)
@@ -234,7 +303,7 @@ def store_in_db(values, type = None):
         try:
             update_stats(values, con, cursor)
         except:
-            print("hahahah")
+            print("nani da fak")
             con.close()
     elif type == 'drug':
         drug_id = values[0]
@@ -298,13 +367,21 @@ def store_new_case():
         if column == 'date':
             data_tuple.append(str(datetime.datetime.now().date()))
             continue
+        elif column == 'location':
+            val = request.args.get(column)
+            data_tuple.append(val.replace("\"",""))
+            continue
         val = request.args.get(column)
         data_tuple.append(val)
     store_in_db(tuple(data_tuple), type='new_case')
     alert = Alert()
-    if alert.update(data_tuple[1], data_tuple[3]):
-        alert.correlated(data_tuple[1], data_tuple[3])
-        alert.send_sms("Swine flu")
+    alert.time_prediction(data_tuple[1])
+    diseaseid, location = data_tuple[1], data_tuple[3]
+    if alert.update(diseaseid, location):
+        alert.correlated(diseaseid, location)
+        dname = to_name(diseaseid)
+        alert.send_sms(dname)
+        alert.post_twitter(dname, location)
     return_val = f"Epidemic ID: {data_tuple[1]} stored in databse."
     return str(True)
 
@@ -369,7 +446,15 @@ def fetch_only_cases():
             final_death_data[date] += 1
         except:
             final_death_data[date] = 1
-    return jsonify({"cases":final_case_data, "deaths":final_death_data})
+        final_cases_array = []
+        final_death_array = []
+        for key in final_case_data:
+            string = str(key) + " " + str(final_case_data[key])
+            final_cases_array.append(string)
+        for key in final_death_data:
+            string = str(key) + " " + str(final_death_data[key])
+            final_death_array.append(string)
+    return jsonify({"cases":final_cases_array, "deaths":final_death_array})
 
 @app.route("/fetch_stats/", methods = ['GET', 'POST'])
 def fetch_stats():
@@ -437,15 +522,42 @@ def get_pharma():
     # print("nani")
     return jsonify(return_data)
 
+@app.route("/get_ratio/", methods = ['GET', 'POST'])
+def get_ratio():
+    con, cursor = make_connection()
+    query = """
+            select * from Stats
+    """
+    try:
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        data = [dict(row) for row in rows]
+    except Exception as e:
+        return_val = str(e)
+    finally:
+        con.close()
+    final_data = []
+    for datum in data:
+        value = int(datum['ndeaths']) / int(datum['ncases'])
+        id = datum['diseaseid']
+        string = str(value) + " " + str(id)
+        final_data.append(string)
+    return jsonify(final_data)
+
 if __name__ == '__main__':
-   app.run(debug = True)
-   #register_hospital
-   # http://127.0.0.1:5000/new_case/?date=12-01-2019&diseaseid=20&death=1&location="123.423423 124.356345"
+   # app.run(debug = True)
+   # sudo python -m smtpd -c DebuggingServer -n localhost:1025
+   app.run(host="127.0.0.1", port=5000)
+   # https://07b92f1b.ngrok.io/fetch_cases/?days=30&diseaseid=7
+   # register_hospital
+   # https://07b92f1b.ngrok.io/new_case/?date=2019-03-03&diseaseid=4&death=1&location="26 78"
+   # https://07b92f1b.ngrok.io/new_case/?date=2019-03-03&diseaseid=4&death=1&location=%2225.6577%2078.45%22
+   # http://127.0.0.1:5000/new_case/?date=2019-03-03&diseaseid=2&death=1&location="25.6577 78.45"
    # http://127.0.0.1:5000/fetch_cases/?days=30&diseaseid=10
    # http://127.0.0.1:5000/fetch_only_cases/?days=30&diseaseid=10
    # http://127.0.0.1:5000/fetch_stats/?diseaseid=10
    # http://127.0.0.1:5000/login/?id=12&password=123
-   # http://127.0.0.1:5000/similar_states/?state=Ujjain
    # http://127.0.0.1:5000/fetch_drugs/?diseaseid=1
    # http://127.0.0.1:5000/new_drug/?drugid=2&drugname=test&drugreq=12&diseaseid=10
    # http://127.0.0.1:5000/get_pharma/?drugid=502
+   # http://127.0.0.1:5000/get_ratio/
