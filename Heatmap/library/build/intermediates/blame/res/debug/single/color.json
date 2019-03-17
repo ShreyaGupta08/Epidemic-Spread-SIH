@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/color/common_google_signin_btn_tint.xml",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/color/common_google_signin_btn_tint.xml"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/color/common_google_signin_btn_text_dark.xml",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/color/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/color/common_google_signin_btn_text_light.xml",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/color/common_google_signin_btn_text_light.xml"
+    }
+]

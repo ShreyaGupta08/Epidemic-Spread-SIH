@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/release/layout/amu_info_window.xml",
+        "source": "/home/uday-vig/Downloads/android-maps-utils-master/library/res/layout/amu_info_window.xml"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/release/layout/amu_webview.xml",
+        "source": "/home/uday-vig/Downloads/android-maps-utils-master/library/res/layout/amu_webview.xml"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/release/layout/amu_text_bubble.xml",
+        "source": "/home/uday-vig/Downloads/android-maps-utils-master/library/res/layout/amu_text_bubble.xml"
+    }
+]

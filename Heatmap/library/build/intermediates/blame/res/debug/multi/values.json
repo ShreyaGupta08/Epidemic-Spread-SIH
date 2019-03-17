@@ -1,0 +1,583 @@
+[
+    {
+        "outputFile": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 105,
+                    "endColumn": 89,
+                    "endOffset": 190
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 0,
+                        "startOffset": 215,
+                        "endColumn": 85,
+                        "endOffset": 300
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 195,
+                    "endColumn": 79,
+                    "endOffset": 270
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 0,
+                        "startOffset": 301,
+                        "endColumn": 75,
+                        "endOffset": 376
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 275,
+                    "endColumn": 89,
+                    "endOffset": 360
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 0,
+                        "startOffset": 377,
+                        "endColumn": 85,
+                        "endOffset": 462
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 365,
+                    "endColumn": 89,
+                    "endOffset": 450
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 0,
+                        "startOffset": 463,
+                        "endColumn": 85,
+                        "endOffset": 548
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 455,
+                    "endColumn": 79,
+                    "endOffset": 530
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 0,
+                        "startOffset": 549,
+                        "endColumn": 75,
+                        "endOffset": 624
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 535,
+                    "endColumn": 80,
+                    "endOffset": 611
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 0,
+                        "startOffset": 625,
+                        "endColumn": 76,
+                        "endOffset": 701
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 616,
+                    "endColumn": 79,
+                    "endOffset": 691
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 0,
+                        "startOffset": 702,
+                        "endColumn": 75,
+                        "endOffset": 777
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 696,
+                    "endColumn": 79,
+                    "endOffset": 771
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 0,
+                        "startOffset": 778,
+                        "endColumn": 75,
+                        "endOffset": 853
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 45,
+                    "startColumn": 4,
+                    "startOffset": 2808,
+                    "endColumn": 37,
+                    "endOffset": 2841
+                },
+                "from": {
+                    "file": "/home/uday-vig/Downloads/android-maps-utils-master/library/res/values/ids.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 37,
+                        "endOffset": 88
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 46,
+                    "startColumn": 4,
+                    "startOffset": 2846,
+                    "endColumn": 67,
+                    "endOffset": 2909
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/54bd385e9fae4e0683200d640ba5634fbf935374/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 0,
+                        "startOffset": 276,
+                        "endColumn": 63,
+                        "endOffset": 339
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 47,
+                    "startColumn": 4,
+                    "startOffset": 2914,
+                    "endColumn": 104,
+                    "endOffset": 3014
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 0,
+                        "startOffset": 951,
+                        "endColumn": 100,
+                        "endOffset": 1051
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 48,
+                    "startColumn": 4,
+                    "startOffset": 3019,
+                    "endColumn": 180,
+                    "endOffset": 3195
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 0,
+                        "startOffset": 1052,
+                        "endColumn": 180,
+                        "endOffset": 1232
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 49,
+                    "startColumn": 4,
+                    "startOffset": 3200,
+                    "endColumn": 124,
+                    "endOffset": 3320
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 0,
+                        "startOffset": 1233,
+                        "endColumn": 120,
+                        "endOffset": 1353
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 50,
+                    "startColumn": 4,
+                    "startOffset": 3325,
+                    "endColumn": 106,
+                    "endOffset": 3427
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 0,
+                        "startOffset": 1354,
+                        "endColumn": 102,
+                        "endOffset": 1456
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 51,
+                    "startColumn": 4,
+                    "startOffset": 3432,
+                    "endColumn": 179,
+                    "endOffset": 3607
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 0,
+                        "startOffset": 1457,
+                        "endColumn": 179,
+                        "endOffset": 1636
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 52,
+                    "startColumn": 4,
+                    "startOffset": 3612,
+                    "endColumn": 122,
+                    "endOffset": 3730
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 0,
+                        "startOffset": 1637,
+                        "endColumn": 118,
+                        "endOffset": 1755
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 53,
+                    "startColumn": 4,
+                    "startOffset": 3735,
+                    "endColumn": 102,
+                    "endOffset": 3833
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 0,
+                        "startOffset": 1756,
+                        "endColumn": 98,
+                        "endOffset": 1854
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 54,
+                    "startColumn": 4,
+                    "startOffset": 3838,
+                    "endColumn": 166,
+                    "endOffset": 4000
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/54bd385e9fae4e0683200d640ba5634fbf935374/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 0,
+                        "startOffset": 439,
+                        "endColumn": 166,
+                        "endOffset": 605
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 55,
+                    "startColumn": 4,
+                    "startOffset": 4005,
+                    "endColumn": 187,
+                    "endOffset": 4188
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 0,
+                        "startOffset": 1855,
+                        "endColumn": 187,
+                        "endOffset": 2042
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 56,
+                    "startColumn": 4,
+                    "startOffset": 4193,
+                    "endColumn": 104,
+                    "endOffset": 4293
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 0,
+                        "startOffset": 2043,
+                        "endColumn": 100,
+                        "endOffset": 2143
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 57,
+                    "startColumn": 4,
+                    "startOffset": 4298,
+                    "endColumn": 180,
+                    "endOffset": 4474
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 0,
+                        "startOffset": 2144,
+                        "endColumn": 180,
+                        "endOffset": 2324
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 58,
+                    "startColumn": 4,
+                    "startOffset": 4479,
+                    "endColumn": 124,
+                    "endOffset": 4599
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 0,
+                        "startOffset": 2325,
+                        "endColumn": 120,
+                        "endOffset": 2445
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 59,
+                    "startColumn": 4,
+                    "startOffset": 4604,
+                    "endColumn": 174,
+                    "endOffset": 4774
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 0,
+                        "startOffset": 2446,
+                        "endColumn": 174,
+                        "endOffset": 2620
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 60,
+                    "startColumn": 4,
+                    "startOffset": 4779,
+                    "endColumn": 147,
+                    "endOffset": 4922
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 0,
+                        "startOffset": 2621,
+                        "endColumn": 143,
+                        "endOffset": 2764
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 61,
+                    "startColumn": 4,
+                    "startOffset": 4927,
+                    "endColumn": 62,
+                    "endOffset": 4985
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 0,
+                        "startOffset": 2765,
+                        "endColumn": 58,
+                        "endOffset": 2823
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 62,
+                    "startColumn": 4,
+                    "startOffset": 4990,
+                    "endColumn": 61,
+                    "endOffset": 5047
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 0,
+                        "startOffset": 2824,
+                        "endColumn": 57,
+                        "endOffset": 2881
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 63,
+                    "startColumn": 4,
+                    "startOffset": 5052,
+                    "endColumn": 78,
+                    "endOffset": 5126
+                },
+                "from": {
+                    "file": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/values/values.xml",
+                    "position": {
+                        "startLine": 29,
+                        "startColumn": 0,
+                        "startOffset": 2882,
+                        "endColumn": 74,
+                        "endOffset": 2956
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 64,
+                    "startColumn": 4,
+                    "startOffset": 5131,
+                    "endLine": 67,
+                    "endColumn": 12,
+                    "endOffset": 5334
+                },
+                "from": {
+                    "file": "/home/uday-vig/Downloads/android-maps-utils-master/library/res/values/styles.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 5,
+                        "endColumn": 12,
+                        "endOffset": 258
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 68,
+                    "startColumn": 4,
+                    "startOffset": 5339,
+                    "endLine": 70,
+                    "endColumn": 12,
+                    "endOffset": 5494
+                },
+                "from": {
+                    "file": "/home/uday-vig/Downloads/android-maps-utils-master/library/res/values/styles.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 263,
+                        "endLine": 8,
+                        "endColumn": 12,
+                        "endOffset": 418
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 71,
+                    "startColumn": 4,
+                    "startOffset": 5499,
+                    "endLine": 75,
+                    "endColumn": 12,
+                    "endOffset": 5746
+                },
+                "from": {
+                    "file": "/home/uday-vig/Downloads/android-maps-utils-master/library/res/values/styles.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 423,
+                        "endLine": 13,
+                        "endColumn": 12,
+                        "endOffset": 670
+                    }
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Heatmap</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="channel_name">Name</string>
+    <string name="channel_description">Description</string>
+    <string-array name="time_array">
+        <item>Last 7 days</item>
+        <item>Last 30 days</item>
+        <item>Last 60 days</item>
+        <item>Last 90 days</item>
+        <item>Last 180 days</item>
+        <item>Last 365 days</item>
+    </string-array>
+    <string-array name="disease_array">
+        <item>AIDS</item>
+        <item>Maleria</item>
+        <item>Cholera</item>
+        <item>SmallPox</item>
+        <item>Tuberculosis</item>
+        <item>Influenza</item>
+        <item>Dengue</item>
+        <item>Chikungunya</item>
+        <item>Ebola</item>
+        <item>Meningitis</item>
+        <item>Epidemic X</item>
+    </string-array>
+</resources>

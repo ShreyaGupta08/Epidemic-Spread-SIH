@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/drawable-mdpi-v4/common_google_signin_btn_text_light_normal_background.9.png",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/drawable-mdpi-v4/common_google_signin_btn_text_light_normal_background.9.png"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/drawable-mdpi-v4/common_google_signin_btn_icon_light_normal_background.9.png",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/drawable-mdpi-v4/common_google_signin_btn_icon_light_normal_background.9.png"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/drawable-mdpi-v4/common_google_signin_btn_text_dark_normal_background.9.png",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/drawable-mdpi-v4/common_google_signin_btn_text_dark_normal_background.9.png"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/drawable-mdpi-v4/googleg_standard_color_18.png",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/drawable-mdpi-v4/googleg_standard_color_18.png"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/drawable-mdpi-v4/googleg_disabled_color_18.png",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/drawable-mdpi-v4/googleg_disabled_color_18.png"
+    },
+    {
+        "merged": "/home/uday-vig/Downloads/android-maps-utils-master/library/build/intermediates/res/merged/debug/drawable-mdpi-v4/common_google_signin_btn_icon_dark_normal_background.9.png",
+        "source": "/home/uday-vig/.android/build-cache/9aa199e370e186baea6b9a7188684b1bc6b5b860/output/res/drawable-mdpi-v4/common_google_signin_btn_icon_dark_normal_background.9.png"
+    }
+]

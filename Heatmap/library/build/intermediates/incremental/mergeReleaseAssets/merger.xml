@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/home/uday-vig/Downloads/android-maps-utils-master/library/src/main/assets"/><source path="/home/uday-vig/Downloads/android-maps-utils-master/library/build/generated/assets/shaders/release"/></dataSet><dataSet config="release"><source path="/home/uday-vig/Downloads/android-maps-utils-master/library/src/release/assets"/></dataSet></merger>
