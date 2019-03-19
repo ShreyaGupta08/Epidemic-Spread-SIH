@@ -6,4 +6,6 @@ Epidemiology is the study and analysis of the distribution and determinants of h
 - Containing 
 - Predicting  
 - Generating Real-time warnings and awareness on epidemic outbreaks. 
+
+
 We propose a real-time epidemic mapping system which can work on the basis of trustworthy crowdsourced data to not only analyze the current epidemic but also prevent the future ones by providing intelligent estimates using state of the art machine learning and artificial intelligence techniques. 
